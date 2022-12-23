@@ -1,22 +1,49 @@
-<?php require "bdd.php";
-include "header.php" ;
+<?php include "bdd.php";
+include "header.php";
 
-if (!empty($_POST["login"]) && !empty($_POST["mdp"]) && !empty($_POST["confmdp"])){
+    $request = 'SELECT * FROM utilisateurs';
+    $req = mysqli_query($bdd,$request);
+
+    $result = mysqli_fetch_assoc($req);
+
+    @$submit= $_POST["envoi"];
+
+if(isset($submit)){
         
     $login = htmlspecialchars($_POST["login"]);
-    $mdp = htmlspecialchars($_POST["mdp"]);
-    $repeatpassword = htmlspecialchars(($_POST["confmdp"]));
-    
-     if($mdp == $repeatpassword){
+    $mdp = $_POST["mdp"];
+    $repeatpassword = $_POST["confmdp"];
 
-       $sql= "INSERT INTO `utilisateurs` ( `login`, `password`) VALUES ('$login', '$mdp')"; // Préparation de la requete 
-       $res = mysqli_query($bdd, $sql);// envoie de la requete 
-   
-         // header('Location: connexion.php');
+    $erreur="";
 
-     }else{
-        echo " Les mots de passe ne sont pas identiques!";
-    }
+    if(empty($login) && empty($mdp)){
+        $erreur="Veuillez saisir tous les champs";
+    }elseif(!empty($login) && empty($mdp)){
+        $erreur="Veuillez saisir un mot de passe";
+    }elseif(!empty($login) && $mdp!=$repeatpassword){
+        $erreur="Veuillez saisir le même mot de passe";
+    }elseif(!empty($login) && $mdp==$repeatpassword){
+
+            $selectlogin = "SELECT login,password FROM utilisateurs WHERE login = '$login'";
+            $sql2 = mysqli_query($bdd,$selectlogin);
+            $result = mysqli_fetch_assoc($sql2);
+            $login_exist= $result;
+            
+            if ($login==$login_exist) {
+                echo "<p id='error'>Ce login est déjà utilisé/p>";
+            }else {
+            $sql= "INSERT INTO `utilisateurs` ( `login`, `password`) VALUES ('$login', '$mdp')"; // Préparation de la requete 
+            $res = mysqli_query($bdd, $sql);// envoie de la requete   
+            echo "Votre compte à été créer avec succès!";
+           // header('Location: connexion.php');
+            }
+
+        
+
+                }
+        else{
+           echo "Un problème est survenu lors de votre inscription";
+       }
 }
 
 ?>
@@ -30,8 +57,6 @@ if (!empty($_POST["login"]) && !empty($_POST["mdp"]) && !empty($_POST["confmdp"]
         <link rel="stylesheet" href="css/style_inscription.css">
         <title>Inscription</title>
 </head>
-
-<?php include "header.php" ?>
 
 <body>
         <form method="POST">
@@ -51,10 +76,13 @@ if (!empty($_POST["login"]) && !empty($_POST["mdp"]) && !empty($_POST["confmdp"]
             <input type="password" placeholder="Confirmer le mdp" name="confmdp" required>
             <br>
             <input type="submit" name="envoi">
+            <br>
+            <br>
+            <?= @$erreur ?>
             </form>
      </body>
 
      <footer>
-    <a href="https://github.com/nicolas-brement?tab=repositories"><img id="github" src="css/image/git.png"></a>
+    <a href="https://github.com/nicolas-brement?tab=repositories"><img id="github" src="images/git.png"></a>
 </footer>
-</html>
+</html> 

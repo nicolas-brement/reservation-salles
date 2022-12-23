@@ -14,8 +14,8 @@ if (!empty($_SESSION['login'])){
         <ul>
             <li><a href="index.php">ACCUEIL</a></li>
             <li><a href="profil.php">PROFIL</a></li>
-            <li><a href="livre-or.php">LIVRE D\'OR</a></li>
-             <li><a href="commentaire.php">ÉCRIRE UN COMMENTAIRE</a></li>
+             <li><a href="planning.php">PLANNING</a></li>
+             <li><a href="reservation-form.php">RESERVATION</a></li>
             <li><a href="logout.php" class="button_deconnexion">DÉCONNEXION</a></li>
         </ul>
     </header>';
@@ -24,7 +24,6 @@ if (!empty($_SESSION['login'])){
         <header>
             <ul>
                 <li><a href="index.php" id="accueil">ACCUEIL</a></li>
-                 <li><a href="livre-or.php">LIVRE D\'OR</a></li>
                 <li><a href="connexion.php" class="button_connect">CONNEXION</a></li>
                 <li><a href="inscription.php" class="button_inscription">INSCRIPTION</a></li>
                 
